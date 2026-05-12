@@ -1,0 +1,18 @@
+:root {
+  --body__bg: #222;
+  --text__body: #fff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 100vw;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+  background: var(--body__bg);
+  color: var(--text__body);
+}
