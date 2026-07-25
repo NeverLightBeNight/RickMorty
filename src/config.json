@@ -1,0 +1,5 @@
+{
+    "baseUrlCharacters": "https://rickandmortyapi.com/api/",
+    "baseUrlLocations": "https://rickandmortyapi.com/api/location",
+    "baseUrlEpisodes": "https://rickandmortyapi.com/api/episode"
+}
