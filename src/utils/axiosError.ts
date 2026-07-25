@@ -1,13 +1,26 @@
 import axios from "axios";
+import { enumStringStatusCode } from "../ts/typization";
 
-export const getError = (error: unknown) => {
+export const getError = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
-    console.log(
-      `Status text: ${error.response?.statusText ? console.log(error.response?.statusText) : "Ничего нету"}, Status: ${error.response?.status}`,
-    );
+    const statusCode = error.response?.status;
+    switch (statusCode) {
+      case 404:
+        console.log(`${enumStringStatusCode.NOT_FOUND}: ${statusCode}`);
+        return `${enumStringStatusCode.NOT_FOUND}`;
+      case 500:
+        console.log(`${enumStringStatusCode.SERVER_ERROR}: ${statusCode}`);
+        return `${enumStringStatusCode.SERVER_ERROR}`;
+      default:
+        console.log(
+          `Ошибка ${statusCode}: ${error.response?.data?.message || enumStringStatusCode.UNKNOWN_ERROR}`,
+        );
+        return error.response?.data?.message;
+    }
   } else if (error instanceof Error) {
     console.log(error.message);
-  } else {
-    console.log("Неизвестная ошибка:", error);
+    return `${error.message}`;
   }
+  console.log(`${enumStringStatusCode.UNKNOWN_ERROR}`);
+  return `${enumStringStatusCode.UNKNOWN_ERROR}`;
 };

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { ICharacters } from "../ts/typization";
 import { defaultSettingAxios } from "../api/defaultSettingAxios";
 import { getError } from "../utils/axiosError";
+import Pagination from "./Pagination";
 
 export default function Characters() {
   const [characters, setCharacters] = useState<ICharacters[]>([]);
@@ -18,7 +19,7 @@ export default function Characters() {
     allPageInPaginatedArr.push(i);
   }
 
-  const getCharacters = useCallback( async () => {
+  const getCharacters = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -27,54 +28,63 @@ export default function Characters() {
         `/character?page=${currentPage}`,
       );
       setCharacters(response.data.results);
-    } catch (e) {
-      const errorMessage = getError(e);
-      setError(errorMessage);
+    } catch (error) {
+      setError(getError(error));
     } finally {
       setLoading(false);
     }
-  }, [currentPage])
+  }, [currentPage]);
 
   useEffect(() => {
     getCharacters();
   }, [getCharacters]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Ошибка: {error}</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
-      <ul className="w-full mb-5 flex flex-wrap justify-center gap-5 bg-blue-500 py-4">
-        {allPageInPaginatedArr.map((page) => (
-          <li
-            onClick={() => setCurrentPage(page)}
-            className={`px-2 py-1 text-white cursor-pointer transition ${
-              currentPage === page
-                ? "bg-blue-700 font-bold"
-                : "bg-blue-300 hover:bg-blue-400"
-            }`}
-            key={page}
-          >
-            {page}
-          </li>
-        ))}
-      </ul>
-      <ul>
+      <Pagination
+        allPageInPaginatedArr={allPageInPaginatedArr}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-6 max-w-7xl mx-auto">
         {characters.map((char) => (
-          <li key={char.id}>
-            <img src={char.image} alt={char.name} />
-            <div>
-              <h1>
-                Имя: <span>{char.name}</span>
+          <li
+            key={char.id}
+            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:z-10"
+          >
+            <img
+              src={char.image}
+              alt={char.name}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4 space-y-2">
+              <h1 className="text-lg font-bold text-gray-800 truncate">
+                Имя:{" "}
+                <span className="font-normal text-gray-600">{char.name}</span>
               </h1>
-              <p>
-                Пол: <span>{char.gender}</span>
+              <p className="text-sm text-gray-700">
+                Пол: <span className="text-gray-600">{char.gender}</span>
               </p>
-              <p>
-                Статус: <span>{char.status}</span>
+              <p className="text-sm text-gray-700">
+                Статус:{" "}
+                <span
+                  className={`font-semibold ${
+                    char.status === "Alive"
+                      ? "text-green-500"
+                      : char.status === "Dead"
+                        ? "text-red-500"
+                        : "text-yellow-500"
+                  }`}
+                >
+                  {char.status}
+                </span>
               </p>
-              <p>
-                Особенности: <span>{char.species}</span>
+              <p className="text-sm text-gray-700">
+                Особенности:{" "}
+                <span className="text-gray-600">{char.species}</span>
               </p>
             </div>
           </li>
