@@ -11,6 +11,9 @@ export default function Characters() {
   const [totalCharacters] = useState<number>(826);
   const [countCharacterPage] = useState<number>(20);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [value, setValue] = useState<string>("");
+  
+  const getValueChange = (e) => setValue(e.target.value);
 
   const allPagesInPaginated = Math.ceil(totalCharacters / countCharacterPage);
 
@@ -42,6 +45,10 @@ export default function Characters() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  const filteredCharacters = characters.filter((char) =>
+    char.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()),
+  );
+
   return (
     <>
       <Pagination
@@ -49,8 +56,16 @@ export default function Characters() {
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />
+      <div className="w-full flex justify-center mb-3 ">
+        <input
+          onChange={getValueChange}
+          type="text"
+          placeholder="Search character..."
+          className="outline-none rounded-2xl shadow-md px-3 py-2 text-2xl tracking-1.25"
+        />
+      </div>
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-6 max-w-7xl mx-auto">
-        {characters.map((char) => (
+        {filteredCharacters.map((char) => (
           <li
             key={char.id}
             className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:z-10"
@@ -62,14 +77,14 @@ export default function Characters() {
             />
             <div className="p-4 space-y-2">
               <h1 className="text-lg font-bold text-gray-800 truncate">
-                Имя:{" "}
+                Имя:
                 <span className="font-normal text-gray-600">{char.name}</span>
               </h1>
               <p className="text-sm text-gray-700">
                 Пол: <span className="text-gray-600">{char.gender}</span>
               </p>
               <p className="text-sm text-gray-700">
-                Статус:{" "}
+                Статус:
                 <span
                   className={`font-semibold ${
                     char.status === "Alive"
@@ -83,13 +98,16 @@ export default function Characters() {
                 </span>
               </p>
               <p className="text-sm text-gray-700">
-                Особенности:{" "}
+                Особенности:
                 <span className="text-gray-600">{char.species}</span>
               </p>
             </div>
           </li>
         ))}
       </ul>
+      {filteredCharacters.length === 0 && (
+        <p className="text-center text-gray-500 font-bold text-2xl">Персонажи не найдены</p>
+      )}
     </>
   );
 }

@@ -67,60 +67,62 @@ export default function Pagination({
   if (totalPage <= 1) return null;
 
   return (
-    <ul className="w-full mb-5 flex flex-wrap justify-center gap-2 bg-blue-500 py-4">
-      <li>
-        <button
-          onClick={goBack}
-          disabled={currentPage === 1}
-          className={`px-3 py-1 rounded ${
-            currentPage === 1
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-300 hover:bg-blue-400"
-          } text-white`}
-        >
-          ← Назад
-        </button>
-      </li>
+    <>
+      <ul className="w-full mb-5 flex flex-wrap justify-center gap-2 bg-blue-500 py-4">
+        <li>
+          <button
+            onClick={goBack}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-300 hover:bg-blue-400"
+            } text-white`}
+          >
+            ← Назад
+          </button>
+        </li>
 
-      {getVisiblePagination(currentPage, totalPage).map((page, index) => {
-        if (page === "...") {
+        {getVisiblePagination(currentPage, totalPage).map((page, index) => {
+          if (page === "...") {
+            return (
+              <li key={`dots-${index}`} className="px-2 text-white font-bold">
+                ...
+              </li>
+            );
+          }
+
+          const isActive = page === currentPage;
+
           return (
-            <li key={`dots-${index}`} className="px-2 text-white font-bold">
-              ...
+            <li
+              key={page}
+              onClick={() => setCurrentPage(page as number)}
+              className={`px-3 py-1 cursor-pointer transition min-w-[36px] text-center ${
+                isActive
+                  ? "bg-blue-700 text-white font-bold"
+                  : "bg-blue-300 text-white hover:bg-blue-400"
+              }`}
+            >
+              {page}
             </li>
           );
-        }
+        })}
 
-        const isActive = page === currentPage;
-
-        return (
-          <li
-            key={page}
-            onClick={() => setCurrentPage(page as number)}
-            className={`px-3 py-1 cursor-pointer transition min-w-[36px] text-center ${
-              isActive
-                ? "bg-blue-700 text-white font-bold"
-                : "bg-blue-300 text-white hover:bg-blue-400"
-            }`}
+        <li>
+          <button
+            onClick={goUp}
+            disabled={currentPage === totalPage}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPage
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-300 hover:bg-blue-400"
+            } text-white`}
           >
-            {page}
-          </li>
-        );
-      })}
-
-      <li>
-        <button
-          onClick={goUp}
-          disabled={currentPage === totalPage}
-          className={`px-3 py-1 rounded ${
-            currentPage === totalPage
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-300 hover:bg-blue-400"
-          } text-white`}
-        >
-          Вперед →
-        </button>
-      </li>
-    </ul>
+            Вперед →
+          </button>
+        </li>
+      </ul>
+    </>
   );
 }
