@@ -12,7 +12,7 @@ export default function Characters() {
   const [countCharacterPage] = useState<number>(20);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [value, setValue] = useState<string>("");
-  
+
   const getValueChange = (e) => setValue(e.target.value);
 
   const allPagesInPaginated = Math.ceil(totalCharacters / countCharacterPage);
@@ -61,14 +61,14 @@ export default function Characters() {
           onChange={getValueChange}
           type="text"
           placeholder="Search character..."
-          className="outline-none rounded-2xl shadow-md px-3 py-2 text-2xl tracking-1.25"
+          className="outline-none rounded-2xl shadow-md shadow-white/20 px-3 py-2 text-2xl tracking-1.25 bg-transparent placeholder:text-white/50 text-white/50"
         />
       </div>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-6 max-w-7xl mx-auto">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10 p-6 max-w-7xl mx-auto ">
         {filteredCharacters.map((char) => (
           <li
             key={char.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:z-10"
+            className="bg-transparent shadow-white/20 relative rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:z-10 "
           >
             <img
               src={char.image}
@@ -76,14 +76,14 @@ export default function Characters() {
               className="w-full h-48 object-cover"
             />
             <div className="p-4 space-y-2">
-              <h1 className="text-lg font-bold text-gray-800 truncate">
+              <h1 className="text-lg font-bold text-gray-800 truncate justify-center items-center flex gap-5">
                 Имя:
-                <span className="font-normal text-gray-600">{char.name}</span>
+                <span className="font-normal text-white">{char.name}</span>
               </h1>
-              <p className="text-sm text-gray-700">
-                Пол: <span className="text-gray-600">{char.gender}</span>
+              <p className="text-sm text-white justify-center items-center flex gap-5">
+                Пол: <span className="text-white/50">{char.gender}</span>
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-white flex justify-center items-center gap-5">
                 Статус:
                 <span
                   className={`font-semibold ${
@@ -92,21 +92,23 @@ export default function Characters() {
                       : char.status === "Dead"
                         ? "text-red-500"
                         : "text-yellow-500"
-                  }`}
+                  } `}
                 >
                   {char.status}
                 </span>
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-white w-full flex gap-2 justify-center items-center">
                 Особенности:
-                <span className="text-gray-600">{char.species}</span>
+                <span className="text-white/50">{char.species}</span>
               </p>
             </div>
           </li>
         ))}
       </ul>
       {filteredCharacters.length === 0 && (
-        <p className="text-center text-gray-500 font-bold text-2xl">Персонажи не найдены</p>
+        <p className="text-center text-white font-bold text-2xl">
+          Персонажи не найдены
+        </p>
       )}
     </>
   );

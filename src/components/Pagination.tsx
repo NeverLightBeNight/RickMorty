@@ -68,14 +68,14 @@ export default function Pagination({
 
   return (
     <>
-      <ul className="w-full mb-5 flex flex-wrap justify-center gap-2 bg-blue-500 py-4">
+      <ul className="w-full mb-5 flex flex-wrap justify-center gap-2 bg-gradient-to-br py-5 from-[#44a08db2] to-[#09363741]">
         <li>
           <button
             onClick={goBack}
             disabled={currentPage === 1}
             className={`px-3 py-1 rounded ${
               currentPage === 1
-                ? "bg-gray-400 cursor-not-allowed"
+                ? "bg-transparent cursor-not-allowed"
                 : "bg-blue-300 hover:bg-blue-400"
             } text-white`}
           >
@@ -98,7 +98,7 @@ export default function Pagination({
             <li
               key={page}
               onClick={() => setCurrentPage(page as number)}
-              className={`px-3 py-1 cursor-pointer transition min-w-[36px] text-center ${
+              className={`px-3 py-1 cursor-pointer transition min-w-9 text-center ${
                 isActive
                   ? "bg-blue-700 text-white font-bold"
                   : "bg-blue-300 text-white hover:bg-blue-400"
@@ -115,8 +115,8 @@ export default function Pagination({
             disabled={currentPage === totalPage}
             className={`px-3 py-1 rounded ${
               currentPage === totalPage
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-300 hover:bg-blue-400"
+                ? "bg-transparent cursor-not-allowed"
+                : "bg-transparent hover:bg-blue-400 cursor-pointer"
             } text-white`}
           >
             Вперед →
